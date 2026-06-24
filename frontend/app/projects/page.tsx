@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getProjects } from "@/services/projectService";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function ProjectsPage() {
 
@@ -22,6 +23,16 @@ export default function ProjectsPage() {
 
     }, []);
 
+    if (projects.length === 0) {
+        return (
+            <div className="text-center mt-10">
+
+                No Projects Yet
+
+            </div>
+        );
+    }
+
     return (
         <div className="p-10">
 
@@ -29,20 +40,18 @@ export default function ProjectsPage() {
                 My Projects
             </h1>
 
-            {projects.map(project => (
-                <div
-                    key={project.id}
-                    className="border p-4 mb-3 rounded"
-                >
-                    <h2 className="font-bold">
-                        {project.name}
-                    </h2>
+            <div className="grid grid-cols-3 gap-5">
 
-                    <p>
-                        {project.description}
-                    </p>
-                </div>
-            ))}
+                {projects.map(project => (
+
+                    <ProjectCard
+                        key={project.id}
+                        project={project}
+                    />
+
+                ))}
+
+            </div>
 
         </div>
     );

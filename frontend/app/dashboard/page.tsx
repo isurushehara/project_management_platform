@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { getDashboardStats }
-from "@/services/dashboardService";
+    from "@/services/dashboardService";
+import DashboardCard from "@/components/DashboardCard";
+import Sidebar from "@/components/Sidebar";
 
 export default function DashboardPage() {
 
@@ -23,39 +25,50 @@ export default function DashboardPage() {
 
     }, []);
 
-    if (!stats)
-        return <p>Loading...</p>;
+    if (!stats) {
+        return (
+            <div className="p-10">
+                Loading...
+            </div>
+        );
+    }
 
     return (
-        <div className="p-10">
+        <div className="flex">
 
-            <h1 className="text-3xl font-bold mb-5">
-                Dashboard
-            </h1>
+            <Sidebar />
 
-            <div className="grid grid-cols-2 gap-4">
+            <main className="flex-1 p-10">
 
-                <div className="border p-5 rounded">
-                    Projects:
-                    {stats.totalProjects}
+                <h1 className="text-4xl font-bold mb-6">
+                    Dashboard
+                </h1>
+
+                <div className="grid grid-cols-4 gap-5">
+
+                    <DashboardCard
+                        title="Projects"
+                        value={stats.totalProjects}
+                    />
+
+                    <DashboardCard
+                        title="Tasks"
+                        value={stats.totalTasks}
+                    />
+
+                    <DashboardCard
+                        title="Completed"
+                        value={stats.completedTasks}
+                    />
+
+                    <DashboardCard
+                        title="Pending"
+                        value={stats.pendingTasks}
+                    />
+
                 </div>
 
-                <div className="border p-5 rounded">
-                    Tasks:
-                    {stats.totalTasks}
-                </div>
-
-                <div className="border p-5 rounded">
-                    Completed:
-                    {stats.completedTasks}
-                </div>
-
-                <div className="border p-5 rounded">
-                    Pending:
-                    {stats.pendingTasks}
-                </div>
-
-            </div>
+            </main>
 
         </div>
     );
