@@ -1,32 +1,61 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
+import { getDashboardStats }
+from "@/services/dashboardService";
 
 export default function DashboardPage() {
 
-    const {
-        token,
-        logout
-    } = useAuth();
+    const [stats, setStats] =
+        useState<any>(null);
+
+    useEffect(() => {
+
+        const loadStats = async () => {
+
+            const data =
+                await getDashboardStats();
+
+            setStats(data);
+        };
+
+        loadStats();
+
+    }, []);
+
+    if (!stats)
+        return <p>Loading...</p>;
 
     return (
         <div className="p-10">
 
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-3xl font-bold mb-5">
                 Dashboard
             </h1>
 
-            <p>
-                Logged In:
-                {token ? " Yes" : " No"}
-            </p>
+            <div className="grid grid-cols-2 gap-4">
 
-            <button
-                onClick={logout}
-                className="bg-red-500 text-white px-4 py-2 mt-5"
-            >
-                Logout
-            </button>
+                <div className="border p-5 rounded">
+                    Projects:
+                    {stats.totalProjects}
+                </div>
+
+                <div className="border p-5 rounded">
+                    Tasks:
+                    {stats.totalTasks}
+                </div>
+
+                <div className="border p-5 rounded">
+                    Completed:
+                    {stats.completedTasks}
+                </div>
+
+                <div className="border p-5 rounded">
+                    Pending:
+                    {stats.pendingTasks}
+                </div>
+
+            </div>
 
         </div>
     );
