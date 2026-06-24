@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { login } from "@/services/authService";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -39,34 +40,101 @@ export default function LoginPage() {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="max-w-md mx-auto mt-20"
-        >
-            <input
-                className="border p-2 w-full"
-                placeholder="Email"
-                value={email}
-                onChange={(e) =>
-                    setEmail(e.target.value)
-                }
-            />
+        <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
 
-            <input
-                className="border p-2 w-full mt-3"
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) =>
-                    setPassword(e.target.value)
-                }
-            />
+            <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
 
-            <button
-                className="bg-blue-600 text-white px-4 py-2 mt-3"
-            >
-                Login
-            </button>
-        </form>
+                <div className="text-center mb-8">
+
+                    <div className="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl font-bold">
+                        T
+                    </div>
+
+                    <h1 className="text-3xl font-bold mt-4 text-slate-800">
+                        Welcome Back
+                    </h1>
+
+                    <p className="text-slate-500 mt-2">
+                        Sign in to continue using TaskFlow
+                    </p>
+
+                </div>
+
+                <form onSubmit={handleSubmit}>
+
+                    <input
+                        className="
+                            w-full
+                            border
+                            border-slate-300
+                            rounded-xl
+                            px-4
+                            py-3
+                            mb-4
+                            focus:outline-none
+                            focus:ring-2
+                            focus:ring-blue-500
+                        "
+                        placeholder="Email Address"
+                        value={email}
+                        onChange={(e) =>
+                            setEmail(e.target.value)
+                        }
+                    />
+
+                    <input
+                        type="password"
+                        className="
+                            w-full
+                            border
+                            border-slate-300
+                            rounded-xl
+                            px-4
+                            py-3
+                            mb-6
+                            focus:outline-none
+                            focus:ring-2
+                            focus:ring-blue-500
+                        "
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) =>
+                            setPassword(e.target.value)
+                        }
+                    />
+
+                    <button
+                        className="
+                            w-full
+                            bg-blue-600
+                            hover:bg-blue-700
+                            text-white
+                            py-3
+                            rounded-xl
+                            font-medium
+                            transition
+                        "
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+                <p className="text-center mt-6 text-slate-500">
+
+                    Don't have an account?
+
+                    <Link
+                        href="/register"
+                        className="text-blue-600 ml-2 font-medium"
+                    >
+                        Register
+                    </Link>
+
+                </p>
+
+            </div>
+
+        </div>
     );
 }
