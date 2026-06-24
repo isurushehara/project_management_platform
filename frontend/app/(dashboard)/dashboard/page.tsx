@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { getDashboardStats } from "@/services/dashboardService";
 import DashboardCard from "@/components/DashboardCard";
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
 
 export default function DashboardPage() {
     const [stats, setStats] = useState<any>(null);
@@ -31,11 +29,7 @@ export default function DashboardPage() {
     return (
         <div className="flex min-h-screen bg-slate-100">
 
-            <Sidebar />
-
             <div className="flex-1">
-
-                <Navbar />
 
                 <main className="flex-1 p-8">
 

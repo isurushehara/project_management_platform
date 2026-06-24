@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
 import TaskCard from "@/components/TaskCard";
+import CreateTaskModal from "@/components/modals/CreateTaskModal";
+import { createTask } from "@/services/taskService";
 
 import { getTasksByProject }
     from "@/services/taskService";
@@ -13,6 +12,10 @@ import { getTasksByProject }
 export default function ProjectDetails() {
 
     const params = useParams();
+
+    const [showModal,
+        setShowModal] =
+        useState(false);
 
     const projectId =
         Number(params.id);
@@ -55,11 +58,7 @@ export default function ProjectDetails() {
     return (
         <div className="flex min-h-screen bg-slate-100">
 
-            <Sidebar />
-
             <div className="flex-1">
-
-                <Navbar />
 
                 <main className="p-8">
 
@@ -90,15 +89,16 @@ export default function ProjectDetails() {
                         </div>
 
                         <button
+                            onClick={() =>
+                                setShowModal(true)
+                            }
                             className="
                                 bg-blue-600
                                 hover:bg-blue-700
                                 text-white
-                                px-5
-                                py-3
+                                px-5 py-3
                                 rounded-xl
                                 font-medium
-                                transition
                             "
                         >
                             + New Task
@@ -174,6 +174,43 @@ export default function ProjectDetails() {
                             </div>
 
                         )}
+
+                    {
+                        showModal && (
+
+                            <CreateTaskModal
+
+                                projectId={projectId}
+
+                                onClose={() =>
+                                    setShowModal(false)
+                                }
+
+                                onCreate={async (
+                                    title,
+                                    description,
+                                    dueDate
+                                ) => {
+
+                                    const task =
+                                        await createTask({
+                                            title,
+                                            description,
+                                            dueDate,
+                                            projectId,
+                                        });
+
+                                    setTasks([
+                                        task,
+                                        ...tasks,
+                                    ]);
+
+                                    setShowModal(false);
+                                }}
+                            />
+
+                        )
+                    }
 
                 </main>
 

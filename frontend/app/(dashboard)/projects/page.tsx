@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { getProjects } from "@/services/projectService";
-
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectCard";
+import CreateProjectModal from "@/components/modals/CreateProjectModal";
+import { createProject } from "@/services/projectService";
 
 export default function ProjectsPage() {
+
+    const [showModal,
+        setShowModal] =
+        useState(false);
 
     const [projects, setProjects] =
         useState<any[]>([]);
@@ -39,11 +42,7 @@ export default function ProjectsPage() {
     return (
         <div className="flex min-h-screen bg-slate-100">
 
-            <Sidebar />
-
             <div className="flex-1">
-
-                <Navbar />
 
                 <main className="p-8">
 
@@ -74,15 +73,14 @@ export default function ProjectsPage() {
                         </div>
 
                         <button
+                            onClick={() =>
+                                setShowModal(true)
+                            }
                             className="
                                 bg-blue-600
-                                hover:bg-blue-700
                                 text-white
-                                px-5
-                                py-3
+                                px-5 py-3
                                 rounded-xl
-                                font-medium
-                                transition
                             "
                         >
                             + New Project
@@ -156,6 +154,38 @@ export default function ProjectsPage() {
                         </div>
 
                     )}
+
+                    {
+                        showModal && (
+
+                            <CreateProjectModal
+
+                                onClose={() =>
+                                    setShowModal(false)
+                                }
+
+                                onCreate={async (
+                                    name,
+                                    description
+                                ) => {
+
+                                    const project =
+                                        await createProject({
+                                            name,
+                                            description,
+                                        });
+
+                                    setProjects([
+                                        project,
+                                        ...projects,
+                                    ]);
+
+                                    setShowModal(false);
+                                }}
+                            />
+
+                        )
+                    }
 
                 </main>
 
