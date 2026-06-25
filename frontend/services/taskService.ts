@@ -43,3 +43,44 @@ export const createTask = async (
 
     return response.data;
 };
+
+export const updateTask = async (
+    id: number,
+    data: {
+        title: string;
+        description: string;
+        status: string;
+        dueDate?: string;
+    }
+) => {
+
+    const token = localStorage.getItem("token");
+
+    const response = await api.put(
+        `/tasks/${id}`,
+        data,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return response.data;
+};
+
+export const deleteTask = async (
+    id: number
+) => {
+
+    const token = localStorage.getItem("token");
+
+    await api.delete(
+        `/tasks/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+};

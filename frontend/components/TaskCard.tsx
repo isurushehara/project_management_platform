@@ -1,15 +1,18 @@
 interface Props {
-    task: {
-        id: number;
-        title: string;
-        description?: string;
-        status: string;
-        dueDate?: string;
-    };
+    task: any;
+    onEdit: (task: any) => void;
+    onDelete: (id: number) => void;
+    onStatusChange: (
+        id: number,
+        status: string
+    ) => void;
 }
 
 export default function TaskCard({
     task,
+    onEdit,
+    onDelete,
+    onStatusChange,
 }: Props) {
 
     const statusStyles = {
@@ -63,20 +66,35 @@ export default function TaskCard({
 
                 </div>
 
-                <span
+                <select
+                    value={task.status}
+                    onChange={(e) =>
+                        onStatusChange(
+                            task.id,
+                            e.target.value
+                        )
+                    }
                     className={`
-                        px-3
-                        py-1
-                        rounded-full
-                        text-sm
-                        font-medium
-                        ${statusStyles[
-                            task.status as keyof typeof statusStyles
-                        ] || "bg-slate-100"}
-                    `}
+        px-3
+        py-2
+        rounded-lg
+        text-sm
+        font-medium
+        border
+        outline-none
+        cursor-pointer
+        ${task.status === "Completed"
+                            ? "bg-green-100 text-green-700 border-green-300"
+                            : task.status === "In Progress"
+                                ? "bg-yellow-100 text-yellow-700 border-yellow-300"
+                                : "bg-slate-100 text-slate-700 border-slate-300"
+                        }
+    `}
                 >
-                    {task.status}
-                </span>
+                    <option value="To Do">To Do</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
 
             </div>
 
@@ -97,6 +115,24 @@ export default function TaskCard({
                 </div>
 
             )}
+
+            <div className="flex justify-end gap-4 mt-5">
+
+                <button
+                    onClick={() => onEdit(task)}
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                    ✏ Edit
+                </button>
+
+                <button
+                    onClick={() => onDelete(task.id)}
+                    className="text-red-600 hover:text-red-800 font-medium"
+                >
+                    🗑 Delete
+                </button>
+
+            </div>
 
         </div>
     );

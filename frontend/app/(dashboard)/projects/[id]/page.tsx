@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import TaskCard from "@/components/TaskCard";
 import CreateTaskModal from "@/components/modals/CreateTaskModal";
 import { createTask } from "@/services/taskService";
+import EditTaskModal from "@/components/modals/EditTaskModal";
+import { updateTask, deleteTask } from "@/services/taskService";
 
 import { getTasksByProject }
     from "@/services/taskService";
@@ -16,6 +18,9 @@ export default function ProjectDetails() {
     const [showModal,
         setShowModal] =
         useState(false);
+
+    const [editingTask, setEditingTask] =
+        useState<any>(null);
 
     const projectId =
         Number(params.id);
@@ -54,6 +59,34 @@ export default function ProjectDetails() {
         }
 
     }, [projectId]);
+
+    const handleStatusChange = async (
+        id: number,
+        status: string
+    ) => {
+
+        const task =
+            tasks.find(t => t.id === id);
+
+        if (!task)
+            return;
+
+        const updated =
+            await updateTask(id, {
+                title: task.title,
+                description: task.description,
+                dueDate: task.dueDate,
+                status,
+            });
+
+        setTasks(
+            tasks.map(t =>
+                t.id === id
+                    ? updated
+                    : t
+            )
+        );
+    };
 
     return (
         <div className="flex min-h-screen bg-slate-100">
@@ -167,6 +200,17 @@ export default function ProjectDetails() {
                                     <TaskCard
                                         key={task.id}
                                         task={task}
+                                        onEdit={(task) => setEditingTask(task)}
+                                        onDelete={async (id) => {
+
+                                            if (!confirm("Delete this task?"))
+                                                return;
+
+                                            await deleteTask(id);
+
+                                            setTasks(tasks.filter(t => t.id !== id));
+                                        }}
+                                        onStatusChange={handleStatusChange}
                                     />
 
                                 ))}
@@ -211,6 +255,39 @@ export default function ProjectDetails() {
 
                         )
                     }
+
+                    {editingTask && (
+
+                        <EditTaskModal
+
+                            task={editingTask}
+
+                            onClose={() =>
+                                setEditingTask(null)
+                            }
+
+                            onSave={async (updatedTask) => {
+
+                                const updated =
+                                    await updateTask(
+                                        updatedTask.id,
+                                        updatedTask
+                                    );
+
+                                setTasks(
+                                    tasks.map(t =>
+                                        t.id === updated.id
+                                            ? updated
+                                            : t
+                                    )
+                                );
+
+                                setEditingTask(null);
+                            }}
+
+                        />
+
+                    )}
 
                 </main>
 
