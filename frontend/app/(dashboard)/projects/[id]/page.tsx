@@ -7,6 +7,7 @@ import CreateTaskModal from "@/components/modals/CreateTaskModal";
 import { createTask } from "@/services/taskService";
 import EditTaskModal from "@/components/modals/EditTaskModal";
 import { updateTask, deleteTask } from "@/services/taskService";
+import toast from "react-hot-toast";
 
 import { getTasksByProject }
     from "@/services/taskService";

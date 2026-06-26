@@ -5,6 +5,7 @@ import Link from "next/link";
 import { login } from "@/services/authService";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
 
@@ -31,11 +32,13 @@ export default function LoginPage() {
 
             loginUser(response.token);
 
+            toast.success("Login successful!");
+
             router.push("/dashboard");
 
         } catch {
 
-            alert("Login Failed");
+            toast.error("Invalid email or password");
         }
     };
 

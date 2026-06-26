@@ -1,6 +1,7 @@
 import { AuthProvider }
-from "@/context/AuthContext";
+    from "@/context/AuthContext";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
     children,
@@ -12,6 +13,10 @@ export default function RootLayout({
             <body>
                 <AuthProvider>
                     {children}
+                    <Toaster
+                        position="top-right"
+                        reverseOrder={false}
+                    />
                 </AuthProvider>
             </body>
         </html>

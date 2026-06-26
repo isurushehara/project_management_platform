@@ -9,6 +9,7 @@ import {
 
 interface AuthContextType {
     token: string | null;
+    isLoggedIn: boolean;
     loginUser: (token: string) => void;
     logout: () => void;
 }
@@ -47,6 +48,7 @@ export function AuthProvider({
         <AuthContext.Provider
             value={{
                 token,
+                isLoggedIn: !!token,
                 loginUser,
                 logout,
             }}

@@ -29,6 +29,7 @@ export default function ProjectsPage() {
 
                 setProjects(data);
 
+
             } finally {
 
                 setLoading(false);

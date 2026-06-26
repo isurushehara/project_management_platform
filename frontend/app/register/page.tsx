@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { register } from "@/services/authService";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
 
@@ -29,11 +30,13 @@ export default function RegisterPage() {
                 password,
             });
 
+            toast.success("Account created successfully!");
+
             router.push("/login");
 
         } catch {
 
-            alert("Registration Failed");
+            toast.error("Registration Failed");
         }
     };
 
